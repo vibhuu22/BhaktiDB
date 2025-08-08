@@ -1,0 +1,113 @@
+<!-- form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhakti Saints Database</title>
+    <link rel="stylesheet" href="form.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <h1 class="text-3xl font-bold text-center text-slate-700 mb-8">Bhakti Saints Database Entry Form</h1>
+        <form id="saintForm" class="bg-white p-8 rounded-lg shadow-lg space-y-6">
+            <!-- Name of Saint -->
+            <div>
+                <label for="name" class="block text-sm font-medium text-slate-600">Name of Saint</label>
+                <input type="text" id="name" name="name" required class="mt-1 block w-full rounded-md bg-slate-100 border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm py-3 px-4">
+            </div>
+
+            <!-- Name of Tradition -->
+            <div>
+                <label for="tradition" class="block text-sm font-medium text-slate-600">Name of Tradition</label>
+                <input type="text" id="tradition" name="tradition" class="mt-1 block w-full rounded-md bg-slate-100 border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm py-3 px-4">
+            </div>
+
+            <!-- Place Associated -->
+            <div>
+                <label class="block text-sm font-medium text-slate-600">Place Associated</label>
+                <div id="placeOptions" class="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-4 text-slate-600">
+                    <div><input type="checkbox" id="birth" name="placeAssociated" value="Birth" class="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"> <label for="birth">Birth</label></div>
+                    <div><input type="checkbox" id="enlightenment" name="placeAssociated" value="Enlightenment" class="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"> <label for="enlightenment">Enlightenment</label></div>
+                    <div><input type="checkbox" id="samadhi" name="placeAssociated" value="Samadhi" class="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"> <label for="samadhi">Samadhi</label></div>
+                    <div><input type="checkbox" id="temple" name="placeAssociated" value="Temple" class="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"> <label for="temple">Temple</label></div>
+                </div>
+            </div>
+
+            <!-- Dynamic Textboxes for Place Associated -->
+            <div id="placeDetails" class="space-y-4"></div>
+
+            <!-- Influence -->
+            <div>
+                <label for="influence" class="block text-sm font-medium text-slate-600">Influence (comma-separated locations/regions)</label>
+                <input type="text" id="influence" name="influence" class="mt-1 block w-full rounded-md bg-slate-100 border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm py-3 px-4">
+            </div>
+
+            <!-- Period -->
+            <div>
+                <label for="period" class="block text-sm font-medium text-slate-600">Period (e.g., 15th Century, 1440-1518)</label>
+                <input type="text" id="period" name="period" class="mt-1 block w-full rounded-md bg-slate-100 border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm py-3 px-4">
+            </div>
+
+            <!-- Tradition Type -->
+            <div>
+                <label for="traditionType" class="block text-sm font-medium text-slate-600">Tradition Type</label>
+                <select id="traditionType" name="traditionType" class="mt-1 block w-full rounded-md bg-slate-100 border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm py-3 px-4">
+                    <option>Nirguna / Saguna</option>
+                    <option>Vaishnava</option>
+                    <option>Saiva</option>
+                    <option>Sakta</option>
+                    <option>Sufism</option>
+                </select>
+            </div>
+
+            <!-- Gender -->
+            <div>
+                <label for="gender" class="block text-sm font-medium text-slate-600">Gender</label>
+                <select id="gender" name="gender" class="mt-1 block w-full rounded-md bg-slate-100 border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm py-3 px-4">
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <!-- Dominant Language -->
+            <div>
+                <label for="language" class="block text-sm font-medium text-slate-600">Dominant Language of Transmission</label>
+                <input type="text" id="language" name="language" class="mt-1 block w-full rounded-md bg-slate-100 border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm py-3 px-4">
+            </div>
+            
+            <!-- Presiding Deity -->
+            <div>
+                <label for="deity" class="block text-sm font-medium text-slate-600">Presiding Deity</label>
+                <input type="text" id="deity" name="deity" class="mt-1 block w-full rounded-md bg-slate-100 border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm py-3 px-4">
+            </div>
+
+            <!-- Poetic Texts -->
+            <div>
+                <label for="texts" class="block text-sm font-medium text-slate-600">Poetic Texts (if any, comma-separated)</label>
+                <input type="text" id="texts" name="texts" class="mt-1 block w-full rounded-md bg-slate-100 border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm py-3 px-4">
+            </div>
+
+            <!-- Philosophical Idea -->
+            <div>
+                <label for="philosophy" class="block text-sm font-medium text-slate-600">Brief Philosophical Idea</label>
+                <textarea id="philosophy" name="philosophy" rows="4" class="mt-1 block w-full rounded-md bg-slate-100 border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm py-3 px-4"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit" class="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                    Submit to Database
+                </button>
+            </div>
+        </form>
+        <!-- Message Box -->
+        <div id="messageBox" class="hidden fixed top-5 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg"></div>
+    </div>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="index.js"></script>
+</body>
+</html>
