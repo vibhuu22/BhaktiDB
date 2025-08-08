@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Form Submission Logic (FIXED) ---
+    // --- Form Submission Logic ---
     saintForm.addEventListener('submit', async (e) => {
         e.preventDefault(); 
 
@@ -40,14 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const formData = new FormData(saintForm);
 
-        // THE FIX: Add frontend validation for required fields.
+        // THE FIX: Add frontend validation for the required 'name' field.
         const saintName = formData.get('name');
         if (!saintName || saintName.trim() === '') {
             showMessage('"Name of Saint" is a required field.', true);
-            return; // Stop the submission
+            return; // Stop the submission if the name is empty
         }
 
-        // This is a safer way to structure the data that avoids the error.
         const structuredData = {
             name: saintName,
             tradition: formData.get('tradition'),
@@ -63,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
             placeAssociatedDetails: {}
         };
         
-        // This loop is now safe because placeAssociated is guaranteed to be an array.
         structuredData.placeAssociated.forEach(place => {
             const detailValue = formData.get(`placeDetail-${place}`);
             if (detailValue) {
