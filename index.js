@@ -40,9 +40,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const formData = new FormData(saintForm);
 
+        // THE FIX: Add frontend validation for required fields.
+        const saintName = formData.get('name');
+        if (!saintName || saintName.trim() === '') {
+            showMessage('"Name of Saint" is a required field.', true);
+            return; // Stop the submission
+        }
+
         // This is a safer way to structure the data that avoids the error.
         const structuredData = {
-            name: formData.get('name'),
+            name: saintName,
             tradition: formData.get('tradition'),
             influence: formData.get('influence') ? formData.get('influence').split(',').map(item => item.trim()) : [],
             period: formData.get('period'),
@@ -52,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
             deity: formData.get('deity'),
             texts: formData.get('texts') ? formData.get('texts').split(',').map(item => item.trim()) : [],
             philosophy: formData.get('philosophy'),
-            // THE FIX: formData.getAll() ALWAYS returns an array, even if it's empty or has one item.
             placeAssociated: formData.getAll('placeAssociated'),
             placeAssociatedDetails: {}
         };
