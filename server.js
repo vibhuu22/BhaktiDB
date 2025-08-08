@@ -4,16 +4,15 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 const app = express();
-// Use port from environment variable for deployment, or 3000 for local development
 const port = process.env.PORT || 3000;
 
 // --- Middleware ---
-app.use(express.json()); // To parse JSON bodies
-app.use(express.static(__dirname)); // Serve static files like CSS and JS from the root directory
+// This should come first to parse the body of POST requests
+app.use(express.json());
 
 // --- MongoDB Connection ---
-// IMPORTANT: For deployment, you will replace this with a cloud MongoDB URI
-const mongoURI = 'mongodb+srv://vibhu22:<vibhu100>@saints.1q1mho2.mongodb.net/?retryWrites=true&w=majority&appName=Saints'; 
+const mongoURI = 'mongodb+srv://<username>:<password>@<your-cluster-url>/bhaktiSaints?retryWrites=true&w=majority'; // IMPORTANT: Make sure this is your correct Atlas URI
+// Example: 'mongodb+srv://vibhu:myPassword@cluster0.abcde.mongodb.net/bhaktiSaints?retryWrites=true&w=majority'
 
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
@@ -22,25 +21,25 @@ mongoose.connect(mongoURI, {
 .then(() => console.log('MongoDB connected successfully.'))
 .catch(err => console.error('MongoDB connection error:', err));
 
-// --- Mongoose Schema (Matches your form.html) ---
+// --- Mongoose Schema ---
 const saintSchema = new mongoose.Schema({
     name: { type: String, required: true },
     tradition: String,
-    placeAssociated: [String], // Array of strings for checkboxes like 'Birth', 'Samadhi'
-    placeAssociatedDetails: { type: Map, of: String }, // For dynamic textboxes: { 'Birth': 'Varanasi', 'Samadhi': 'Puri' }
-    influence: [String], // Array of strings for comma-separated values
+    placeAssociated: [String],
+    placeAssociatedDetails: { type: Map, of: String },
+    influence: [String],
     period: String,
     traditionType: String,
     gender: String,
     language: String,
     deity: String,
-    texts: [String], // Array of strings for comma-separated values
+    texts: [String],
     philosophy: String,
-}, { timestamps: true }); // Adds createdAt and updatedAt
+}, { timestamps: true });
 
 const Saint = mongoose.model('Saint', saintSchema);
 
-// --- API Routes ---
+// --- API Routes (FIX: Define API routes BEFORE static file routes) ---
 
 // POST a new saint entry
 app.post('/api/saints', async (req, res) => {
@@ -64,10 +63,15 @@ app.get('/api/saints', async (req, res) => {
     }
 });
 
-// --- Serve the HTML file for the root URL ---
-app.get('/', (req, res) => {
+// --- Static File Serving ---
+// This serves the CSS and JS files
+app.use(express.static(path.join(__dirname)));
+
+// This serves the main HTML file for any other GET request that isn't an API call
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'form.html'));
 });
+
 
 // --- Start the server ---
 app.listen(port, () => {
