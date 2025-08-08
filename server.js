@@ -7,21 +7,19 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // --- Middleware ---
-// This should come first to parse the body of POST requests
-app.use(express.json());
+app.use(express.json()); // To parse JSON bodies
+app.use(express.static(path.join(__dirname))); // To serve static files like HTML, CSS, JS
 
 // --- MongoDB Connection ---
-const mongoURI = 'mongodb+srv://<username>:<password>@<your-cluster-url>/bhaktiSaints?retryWrites=true&w=majority'; // IMPORTANT: Make sure this is your correct Atlas URI
-// Example: 'mongodb+srv://vibhu:myPassword@cluster0.abcde.mongodb.net/bhaktiSaints?retryWrites=true&w=majority'
+// This is the complete and correct connection string for your Atlas database.
+const mongoURI = 'mongodb+srv://vibhu22:vibhu100@saints.1q1mho2.mongodb.net/bhaktiSaints?retryWrites=true&w=majority&appName=Saints'; 
 
-mongoose.connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+// The options `useNewUrlParser` and `useUnifiedTopology` are deprecated in recent versions of Mongoose and are no longer needed.
+mongoose.connect(mongoURI)
 .then(() => console.log('MongoDB connected successfully.'))
 .catch(err => console.error('MongoDB connection error:', err));
 
-// --- Mongoose Schema ---
+// --- Mongoose Schema and Model ---
 const saintSchema = new mongoose.Schema({
     name: { type: String, required: true },
     tradition: String,
@@ -35,11 +33,11 @@ const saintSchema = new mongoose.Schema({
     deity: String,
     texts: [String],
     philosophy: String,
-}, { timestamps: true });
+}, { timestamps: true }); // Adds createdAt and updatedAt timestamps
 
 const Saint = mongoose.model('Saint', saintSchema);
 
-// --- API Routes (FIX: Define API routes BEFORE static file routes) ---
+// --- API Routes ---
 
 // POST a new saint entry
 app.post('/api/saints', async (req, res) => {
@@ -48,32 +46,38 @@ app.post('/api/saints', async (req, res) => {
         const savedSaint = await newSaint.save();
         res.status(201).json(savedSaint);
     } catch (error) {
-        console.error("Error saving saint:", error);
-        res.status(400).json({ message: 'Error saving saint data', error: error.message });
+        // --- ENHANCED ERROR LOGGING ---
+        console.error("\n--- ERROR SAVING SAINT ---");
+        console.error("Timestamp:", new Date().toISOString());
+        console.error("Received Data (req.body):", JSON.stringify(req.body, null, 2));
+        console.error("Mongoose Error:", error.message);
+        console.error("--------------------------\n");
+        
+        res.status(400).json({ 
+            message: 'Error saving saint data. Check server logs for details.', 
+            error: error.message 
+        });
     }
 });
 
-// GET all saints
+// GET all saints (for potential future use, e.g., displaying a list)
 app.get('/api/saints', async (req, res) => {
     try {
-        const saints = await Saint.find().sort({ createdAt: -1 });
+        const saints = await Saint.find();
         res.status(200).json(saints);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching saints', error: error.message });
     }
 });
 
-// --- Static File Serving ---
-// This serves the CSS and JS files
-app.use(express.static(path.join(__dirname)));
 
-// This serves the main HTML file for any other GET request that isn't an API call
-app.get('*', (req, res) => {
+// --- Serve the HTML file for the root URL ---
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'form.html'));
 });
 
 
 // --- Start the server ---
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running on http://localhost:${port}`);
 });
