@@ -65,6 +65,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+document.getElementById('traditionType').addEventListener('change', function() {
+    const customTraditionInput = document.getElementById('customTradition');
+    
+    if (this.value === 'Others') {
+        customTraditionInput.style.display = 'block';
+        customTraditionInput.required = true;
+    } else {
+        customTraditionInput.style.display = 'none';
+        customTraditionInput.required = false;
+        customTraditionInput.value = ''; // Clear the input when hidden
+    }
+});
+
     // --- Dynamic Textbox Logic ---
     placeOptions.addEventListener('change', (e) => {
         if (e.target.type === 'checkbox') {
