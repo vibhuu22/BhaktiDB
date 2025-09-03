@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tradition: formData.get('tradition'),
             influence: formData.get('influence') ? formData.get('influence').split(',').map(item => item.trim()) : [],
             period: formData.get('period'),
-            traditionType: formData.get('traditionType'),
+            traditionType: formData.get('traditionType') === 'Others' ? formData.get('customTradition') : formData.get('traditionType'),
             gender: formData.get('gender'),
             language: formData.get('language'),
             deity: formData.get('deity'),
